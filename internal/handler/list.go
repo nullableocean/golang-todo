@@ -1,10 +1,10 @@
 package handler
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+)
 
-func (h *Handler) getAllLists(ctx *gin.Context) {
-
-}
+func (h *Handler) getAllLists(ctx *gin.Context) {}
 
 func (h *Handler) getListById(ctx *gin.Context) {
 

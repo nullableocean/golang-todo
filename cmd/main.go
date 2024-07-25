@@ -6,18 +6,18 @@ import (
 	"github.com/nullableocean/golang-todo/internal/handler"
 	"github.com/nullableocean/golang-todo/internal/repository"
 	"github.com/nullableocean/golang-todo/internal/services"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	"log"
 	"os"
 )
 
 func main() {
 	if err := godotenv.Load(); err != nil {
-		log.Fatalf("error init godotenv: %s", err.Error())
+		logrus.Fatalf("error init godotenv: %s", err.Error())
 	}
 
 	if err := initConfig(); err != nil {
-		log.Fatalf("error init config: %s", err.Error())
+		logrus.Fatalf("error init config: %s", err.Error())
 	}
 
 	db, err := repository.NewPostgresDB(repository.Config{
@@ -29,7 +29,7 @@ func main() {
 		SSLMode:  viper.GetString("db.sslmode"),
 	})
 	if err != nil {
-		log.Fatalf("error from db: %s", err.Error())
+		logrus.Fatalf("error from db: %s", err.Error())
 	}
 
 	repo := repository.NewRepository(db)
@@ -39,7 +39,7 @@ func main() {
 	serv := new(todo.Server)
 	err = serv.Run(viper.GetString("port"), handlers.InitRoutes())
 	if err != nil {
-		log.Fatalf("error from serv: %s", err.Error())
+		logrus.Fatalf("error from serv: %s", err.Error())
 	}
 }
 
