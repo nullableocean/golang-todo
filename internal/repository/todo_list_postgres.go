@@ -33,8 +33,7 @@ func (r *TodoListsPostgres) GetListById(userId, listId int) (models.TodoList, er
 	query := fmt.Sprintf(
 		"SELECT tl.id, tl.title, tl.description FROM %s AS tl INNER JOIN %s as ul ON tl.id = ul.list_id WHERE ul.user_id = $1 and ul.list_id=$2",
 		todoListsTable,
-		usersListsTable,
-	)
+		usersListsTable)
 
 	err := r.db.Get(&list, query, userId, listId)
 	return list, err
@@ -68,17 +67,17 @@ func (r *TodoListsPostgres) Create(userId int, list models.TodoList) (int, error
 func (r *TodoListsPostgres) Update(userId, listId int, input models.TodoListUpdateInput) error {
 	updatingColumns := make([]string, 0)
 	updateArgs := make([]interface{}, 0)
-	argsCount := 1
+	argsIndex := 1
 
 	if input.Title != nil {
-		updatingColumns = append(updatingColumns, fmt.Sprintf("title=$%d", argsCount))
+		updatingColumns = append(updatingColumns, fmt.Sprintf("title=$%d", argsIndex))
 		updateArgs = append(updateArgs, *input.Title)
-		argsCount++
+		argsIndex++
 	}
 	if input.Description != nil {
-		updatingColumns = append(updatingColumns, fmt.Sprintf("description=$%d", argsCount))
+		updatingColumns = append(updatingColumns, fmt.Sprintf("description=$%d", argsIndex))
 		updateArgs = append(updateArgs, *input.Description)
-		argsCount++
+		argsIndex++
 	}
 
 	updateArgs = append(updateArgs, userId, listId)
@@ -88,9 +87,8 @@ func (r *TodoListsPostgres) Update(userId, listId int, input models.TodoListUpda
 		todoListsTable,
 		setQuerySubstr,
 		usersListsTable,
-		argsCount,
-		argsCount+1,
-	)
+		argsIndex,
+		argsIndex+1)
 
 	_, err := r.db.Exec(query, updateArgs...)
 	return err
@@ -100,8 +98,7 @@ func (r *TodoListsPostgres) Delete(userId, listId int) error {
 	query := fmt.Sprintf(
 		"DELETE FROM %s as tl USING %s as ul WHERE tl.id = ul.list_id AND ul.user_id = $1 AND ul.list_id = $2",
 		todoListsTable,
-		usersListsTable,
-	)
+		usersListsTable)
 
 	_, err := r.db.Exec(query, userId, listId)
 	return err

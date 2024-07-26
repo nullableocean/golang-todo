@@ -64,7 +64,7 @@ func (h *Handler) createList(ctx *gin.Context) {
 		return
 	}
 
-	listId, err := h.services.Create(userId, input)
+	listId, err := h.services.TodoList.Create(userId, input)
 	if err != nil {
 		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
@@ -96,7 +96,7 @@ func (h *Handler) updateList(ctx *gin.Context) {
 		return
 	}
 
-	err = h.services.Update(userId, listId, input)
+	err = h.services.TodoList.Update(userId, listId, input)
 	if err != nil {
 		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
@@ -118,7 +118,7 @@ func (h *Handler) deleteList(ctx *gin.Context) {
 		return
 	}
 
-	err = h.services.Delete(userId, listId)
+	err = h.services.TodoList.Delete(userId, listId)
 	if err != nil {
 		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
