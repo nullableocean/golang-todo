@@ -14,6 +14,16 @@ import (
 	"syscall"
 )
 
+// @title Todo API
+// @version 0.0.1
+// @description Same learn Go project
+
+// @BasePath /api
+// @produce json
+
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name authorization
 func main() {
 	if err := godotenv.Load(); err != nil {
 		logrus.Fatalf("error init godotenv: %s", err.Error())
@@ -63,6 +73,8 @@ func main() {
 	if err != nil {
 		logrus.Fatalf("database closing with error: %s", err.Error())
 	}
+
+	logrus.Println("shutting down success")
 }
 
 func initConfig() error {

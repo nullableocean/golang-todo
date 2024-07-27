@@ -6,6 +6,17 @@ import (
 	"net/http"
 )
 
+// @Summary sign-up
+// @Description register and create new user
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param input body models.User true "User info"
+// @Success 201 {int} int id
+// @Failure 400 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /auth/sign-up [post]
 func (h *Handler) signUp(ctx *gin.Context) {
 	var input models.User
 
@@ -31,6 +42,17 @@ type signInInput struct {
 	Password string `json:"password" binding:"required"`
 }
 
+// @Summary sign-in
+// @Description login for get jwt token
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param input body signInInput true "credential"
+// @Success 201 {string} string token
+// @Failure 400 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /auth/sign-in [post]
 func (h *Handler) signIn(ctx *gin.Context) {
 	var input signInInput
 

@@ -2,6 +2,7 @@ package handler
 
 import (
 	"errors"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
@@ -51,4 +52,13 @@ func (h *Handler) getUserId(ctx *gin.Context) (int, error) {
 	}
 
 	return id, nil
+}
+
+func (h *Handler) hello(ctx *gin.Context) {
+	user, ok := ctx.Get(userCtx)
+	if !ok {
+		user = "undefined"
+	}
+
+	fmt.Printf("Hello from middleware, user %v", user)
 }

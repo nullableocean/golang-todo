@@ -11,6 +11,18 @@ type getAllTasksResponse struct {
 	Data []models.Task `json:"data"`
 }
 
+// @Summary Get tasks
+// @Secure ApiKeyAuth
+// @Description "Get all tasks from todo list"
+// @Tags Tasks
+// @Accept json
+// @Produce json
+// @Param id path integer true "list id"
+// @Success 201 {array} models.Task
+// @Failure 400 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /api/lists/{id}/tasks [get]
 func (h *Handler) getAllTasks(ctx *gin.Context) {
 	userId, err := h.getUserId(ctx)
 	if err != nil {
@@ -33,6 +45,18 @@ func (h *Handler) getAllTasks(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, getAllTasksResponse{Data: tasks})
 }
 
+// @Summary Get task
+// @Secure ApiKeyAuth
+// @Description "Get task by id"
+// @Tags Tasks
+// @Accept json
+// @Produce json
+// @Param id path integer true "task id"
+// @Success 201 {object} models.Task
+// @Failure 400 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /api/tasks/{id} [get]
 func (h *Handler) getTaskById(ctx *gin.Context) {
 	userId, err := h.getUserId(ctx)
 	if err != nil {
@@ -55,6 +79,19 @@ func (h *Handler) getTaskById(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, task)
 }
 
+// @Summary Create task
+// @Secure ApiKeyAuth
+// @Description "Create task"
+// @Tags Tasks
+// @Accept json
+// @Produce json
+// @Param id path integer true "list id"
+// @Param id body models.Task true "task data"
+// @Success 201 {int} int "id"
+// @Failure 400 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /api/lists/{id}/tasks [post]
 func (h *Handler) createTask(ctx *gin.Context) {
 	var input models.Task
 
@@ -87,6 +124,19 @@ func (h *Handler) createTask(ctx *gin.Context) {
 	})
 }
 
+// @Summary Update task
+// @Secure ApiKeyAuth
+// @Description "Update task"
+// @Tags Tasks
+// @Accept json
+// @Produce json
+// @Param id path integer true "task id"
+// @Param id body models.TaskUpdateInput true "task update data"
+// @Success 201 {string} string "status"
+// @Failure 400 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /api/tasks/{id} [put]
 func (h *Handler) updateTask(ctx *gin.Context) {
 	var input models.TaskUpdateInput
 
@@ -117,6 +167,18 @@ func (h *Handler) updateTask(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, StatusResponse{"ok"})
 }
 
+// @Summary Delete task
+// @Secure ApiKeyAuth
+// @Description "Delete task"
+// @Tags Tasks
+// @Accept json
+// @Produce json
+// @Param id path integer true "task id"
+// @Success 201 {string} string "status"
+// @Failure 400 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /api/tasks/{id} [delete]
 func (h *Handler) deleteTask(ctx *gin.Context) {
 	userId, err := h.getUserId(ctx)
 	if err != nil {

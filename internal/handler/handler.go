@@ -3,6 +3,8 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/nullableocean/golang-todo/internal/services"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 type Handler struct {
@@ -24,7 +26,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		auth.POST("/sign-in", h.signIn)
 	}
 
-	api := router.Group("/api", h.identifyUser)
+	api := router.Group("/api", h.identifyUser, h.hello)
 	{
 		lists := api.Group("/lists")
 		{
@@ -48,6 +50,9 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			tasks.DELETE("/:id", h.deleteTask)
 		}
 	}
+
+	// /swagger/index.html
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	return router
 }
