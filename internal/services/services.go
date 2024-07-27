@@ -23,7 +23,7 @@ type TodoList interface {
 type TodoTask interface {
 	GetAll(userId, listId int) ([]models.Task, error)
 	GetTaskById(userId, taskId int) (models.Task, error)
-	Create(listId int, task models.Task) (int, error)
+	Create(userId, listId int, task models.Task) (int, error)
 	Update(userId, taskId int, input models.TaskUpdateInput) error
 	Delete(userId, taskId int) error
 }

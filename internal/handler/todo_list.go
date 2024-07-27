@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-type getAllResponse struct {
+type getAllListResponse struct {
 	Data []models.TodoList `json:"data"`
 }
 
@@ -24,7 +24,7 @@ func (h *Handler) getAllLists(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, getAllResponse{Data: lists})
+	ctx.JSON(http.StatusOK, getAllListResponse{Data: lists})
 }
 
 func (h *Handler) getListById(ctx *gin.Context) {

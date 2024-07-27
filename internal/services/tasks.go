@@ -17,7 +17,7 @@ func NewTasksService(r repository.TodoTask, rList repository.TodoList) *TasksSer
 
 func (s *TasksService) GetAll(userId, listId int) ([]models.Task, error) {
 	if _, err := s.rList.GetListById(userId, listId); err != nil {
-		return nil, errors.New("error with list: " + err.Error())
+		return nil, errors.New("error with todo list: " + err.Error())
 	}
 
 	return s.r.GetAll(userId, listId)
@@ -27,7 +27,11 @@ func (s *TasksService) GetTaskById(userId, taskId int) (models.Task, error) {
 	return s.r.GetTaskById(userId, taskId)
 }
 
-func (s *TasksService) Create(listId int, task models.Task) (int, error) {
+func (s *TasksService) Create(userId, listId int, task models.Task) (int, error) {
+	if _, err := s.rList.GetListById(userId, listId); err != nil {
+		return 0, errors.New("error with todo list: " + err.Error())
+	}
+
 	return s.r.Create(listId, task)
 }
 
