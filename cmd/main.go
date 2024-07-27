@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"github.com/joho/godotenv"
 	"github.com/nullableocean/golang-todo"
 	"github.com/nullableocean/golang-todo/internal/handler"
@@ -9,6 +10,8 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"os"
+	"os/signal"
+	"syscall"
 )
 
 func main() {
@@ -37,9 +40,28 @@ func main() {
 	handlers := handler.NewHandler(service)
 
 	serv := new(todo.Server)
-	err = serv.Run(viper.GetString("port"), handlers.InitRoutes())
+	go func() {
+		err = serv.Run(viper.GetString("port"), handlers.InitRoutes())
+		if err != nil {
+			logrus.Fatalf("error from serv: %s", err.Error())
+		}
+	}()
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
+
+	<-quit
+
+	logrus.Println("app shutting down...")
+
+	err = serv.Shutdown(context.Background())
 	if err != nil {
-		logrus.Fatalf("error from serv: %s", err.Error())
+		logrus.Fatalf("server shutting down with error: %s", err.Error())
+	}
+
+	err = db.Close()
+	if err != nil {
+		logrus.Fatalf("database closing with error: %s", err.Error())
 	}
 }
 
