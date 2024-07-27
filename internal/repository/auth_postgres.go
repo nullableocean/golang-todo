@@ -19,7 +19,6 @@ func (r *AuthPostgres) CreateUser(user models.User) (int, error) {
 
 	query := fmt.Sprintf("INSERT INTO %s (name, username, password) VALUES ($1, $2, $3) RETURNING ID", usersTable)
 	row := r.db.QueryRow(query, user.Name, user.Username, user.Password)
-	fmt.Println("CREATED_PASS_HASH: ", user.Password)
 	err := row.Scan(&id)
 	if err != nil {
 		return 0, err
@@ -32,7 +31,6 @@ func (r *AuthPostgres) GetUser(username, passwordHash string) (models.User, erro
 	var user models.User
 
 	query := fmt.Sprintf("SELECT id FROM %s WHERE username=$1 AND password=$2", usersTable)
-	fmt.Println("SEARCH_PASS_HASH: ", passwordHash, username)
 	err := r.db.Get(&user, query, username, passwordHash)
 
 	return user, err
