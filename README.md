@@ -1,5 +1,8 @@
 #### Todo App 
 
-Небольшой проект для знакомства с [gin](https://github.com/gin-gonic/gin) и [go-swagger](https://github.com/go-swagger/go-swagger)
+Небольшой проект для знакомства с инструментами:
+- [gin](https://github.com/gin-gonic/gin)
+- [go-swagger](https://github.com/go-swagger/go-swagger)
+- [golang-migrate](https://github.com/golang-migrate/migrate)
 
 
